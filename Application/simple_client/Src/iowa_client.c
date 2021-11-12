@@ -136,7 +136,7 @@ static void iowa_thread(void const *user_arg) {
 		ERROR_Handler(DBG_CHAN_APPLICATION, IOWA_GET_IMEI_FAILURE, ERROR_FATAL);
 	}
 
-	IOWA_APP_TRACE_ARG("Device Name",iowaApp.devIdStr);
+	IOWA_APP_TRACE_ARG("Device Name %s",iowaApp.devIdStr);
 
 #ifdef IOWA_THREAD_SUPPORT
 	if (iowa_client_configure(iowaApp.iowaContext, (const char *)iowaApp.devIdStr, &info, prv_iowaclient_event_cb) != IOWA_COAP_NO_ERROR)

@@ -29,6 +29,7 @@
 #include <cellular_control_api.h>
 #include "iowa_app.h"
 #include "iowa_light_control.h"
+#include "iowa_accelerometer.h"
 #include <assert.h>
 #include <string.h>
 
@@ -38,6 +39,7 @@
 
 #include "stm32l462e_cell1.h"
 #include "stm32l462e_cell1_env_sensors.h"
+#include "stm32l462e_cell1_motion_sensors.h"
 
 extern iowa_application_context_t iowaApp;
 
@@ -105,6 +107,9 @@ void iowasensor_interrupt(void)
 void iowasensor_init(void)
 {
 	float fValue=0;
+#if (USE_FULL_IOWA_VERSION == 1)
+	MOTION_SENSOR_Axes_t acceleration;
+#endif
 
 	/*Add push button*/
 	BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
@@ -139,6 +144,16 @@ void iowasensor_init(void)
 	BSP_ENV_SENSOR_Init_Pressure();
 	BSP_ENV_SENSOR_Read_Pressure(&fValue);
 	iowa_client_IPSO_add_sensor(iowaApp.iowaContext, IOWA_IPSO_PRESSURE, fValue, "hPa", NULL, 260, 1260, &iowaApp.pressureId);
+
+#if (USE_FULL_IOWA_VERSION == 1)
+	IOWA_APP_TRACE("Add Motion sensor.");
+	BSP_MOTION_SENSOR_Init_Acc();
+	BSP_MOTION_SENSOR_Read_Acc(&acceleration);
+	IOWA_APP_TRACE_ARG("BSP_MOTION_SENSOR_InitXXXX_Acc values x=%ld y=%ld z=%ld", acceleration.x, acceleration.y, acceleration.z);
+	retval = iowa_client_add_accelerometer_object(iowaApp.iowaContext, IOWA_ACCELEROMETER_3_AXIS, 0.0, 0.0, "m/s²",&iowaApp.accelerometerId);
+
+#endif /* USE_FULL_IOWA_VERSION*/
+
 }
 
 /* @brief  Retrieve the code from the sensors board
@@ -148,10 +163,10 @@ void iowasensor_real_sensors_data(void const *argument)
 {
 	UNUSED(argument);
 
-	uint32_t cpt;
 	float fValue;
-
-	cpt = 0;
+#if (USE_FULL_IOWA_VERSION == 1)
+	MOTION_SENSOR_Axes_t acceleration;
+#endif
 
 	/*Update push button value*/
 	float buttonValue = 0.f;
@@ -161,34 +176,38 @@ void iowasensor_real_sensors_data(void const *argument)
 	}
 	iowa_client_IPSO_update_value(iowaApp.iowaContext, iowaApp.pushButtonId, buttonValue);
 
-	if (cpt >= 15)
+	if (iowaApp.temperatureId != 0)
 	{
-		cpt = 0;
-		if (iowaApp.temperatureId != 0)
-		{
-			/*Update Temperature sensor value*/
-			BSP_ENV_SENSOR_Init_Temperature();
-			BSP_ENV_SENSOR_Read_Temperature(&fValue);
-			iowa_client_IPSO_update_value(iowaApp.iowaContext, iowaApp.temperatureId, (float) fValue);
-		}
-
-		if (iowaApp.humidityId != 0)
-		{
-			/* Update Humidity sensor value */
-			BSP_ENV_SENSOR_Init_Humidity();
-			BSP_ENV_SENSOR_ReadT_Humidity(&fValue);
-			iowa_client_IPSO_update_value(iowaApp.iowaContext, iowaApp.humidityId, (float) fValue);
-		}
-
-		if (iowaApp.pressureId != 0)
-		{
-			/*Update Pressure sensor value */
-			BSP_ENV_SENSOR_Init_Pressure();
-			BSP_ENV_SENSOR_Read_Pressure(&fValue);
-			iowa_client_IPSO_update_value(iowaApp.iowaContext, iowaApp.pressureId, (float) fValue);
-		}
-
+		/*Update Temperature sensor value*/
+		BSP_ENV_SENSOR_Read_Temperature(&fValue);
+		iowa_client_IPSO_update_value(iowaApp.iowaContext, iowaApp.temperatureId, (float) fValue);
 	}
+
+	if (iowaApp.humidityId != 0)
+	{
+		/* Update Humidity sensor value */
+		BSP_ENV_SENSOR_ReadT_Humidity(&fValue);
+		iowa_client_IPSO_update_value(iowaApp.iowaContext, iowaApp.humidityId, (float) fValue);
+	}
+
+	if (iowaApp.pressureId != 0)
+	{
+		/*Update Pressure sensor value */
+		BSP_ENV_SENSOR_Read_Pressure(&fValue);
+		iowa_client_IPSO_update_value(iowaApp.iowaContext, iowaApp.pressureId, (float) fValue);
+	}
+
+#if (USE_FULL_IOWA_VERSION == 1)
+	if (iowaApp.accelerometerId != 0)
+	{
+		/*Update Pressure sensor value */
+		BSP_MOTION_SENSOR_Read_Acc(&acceleration);
+		iowa_client_accelerometer_update_axis(iowaApp.iowaContext, iowaApp.accelerometerId, acceleration.x, acceleration.y, acceleration.z);
+	}
+
+#endif /* USE_FULL_IOWA_VERSION*/
+
+
 	/* Debug / Trace information */
 	/*
 	IOWA_APP_TRACE_ARG("It stay %ld bytes in iowa client task.", uxTaskGetStackHighWaterMark(iowaApp.iowaClientTaskHandle));
@@ -207,10 +226,11 @@ void iowasensor_real_sensors_data(void const *argument)
 		IOWA_APP_TRACE_ARG("Task state = %d.", pxTaskStatusArray[i].eCurrentState);
 		IOWA_APP_TRACE_ARG("Minimum free size %d bytes.", pxTaskStatusArray[i].usStackHighWaterMark);
 	}
-	*/
-	cpt++;
-	IOWA_APP_TRACE_ARG("Max IOWA allocation %d bytes.", iowaApp.maxAllocatedSize);
+	 */
+
+	/* IOWA_APP_TRACE_ARG("Max IOWA allocation %d bytes.", iowaApp.maxAllocatedSize);
 	IOWA_APP_TRACE_ARG("Current IOWA allocation %d bytes.", iowaApp.currentAllocatedSize);
+	 */
 }
 
 #endif /* USE_STM32L462E_CELL01 */

@@ -88,7 +88,8 @@ typedef struct
 	iowa_sensor_t humidityId;
 	iowa_sensor_t pressureId;
 	iowa_sensor_t pushButtonId;
-	iowa_sensor_t voltID;
+	iowa_sensor_t accelerometerId;
+	iowa_sensor_t voltID;		/* Fake Value */
 
 }iowa_application_context_t;
 
