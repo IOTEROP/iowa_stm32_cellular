@@ -1,5 +1,12 @@
 (WORK IN PROGRESS)
 
+Changelog:
+20211216:
+ - Add IAR IDE support (IAR Embeded Workbench for ARM rel.: 9.10)
+ - Reorg source code tree (Iowa sample is now under Misc/Samples/Iowa_Client
+
+
+
 ![IOWA Logo](https://github.com/IOTEROP/IOWA/raw/master/.images/IoTerop_logo.jpg)
 
 

@@ -706,7 +706,7 @@ static iowa_status_t prv_deserializeLinkAttributes(uint8_t *buffer,
     return result;
 }
 
-void prv_freeAttribute(void *nodeP)
+static void prv_freeAttribute(void *nodeP)
 {
     attribute_t *attrP;
 

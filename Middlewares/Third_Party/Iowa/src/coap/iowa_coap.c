@@ -257,7 +257,7 @@ iowa_coap_message_t * iowa_coap_message_new(uint8_t type,
     return messageP;
 }
 
-void prv_freeBufferList(iowa_linked_buffer_t *bufferP)
+static void prv_freeBufferList(iowa_linked_buffer_t *bufferP)
 {
     iowa_system_free(bufferP->data);
     iowa_system_free(bufferP);

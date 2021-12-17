@@ -28,7 +28,7 @@
 /*************************************************************************************
 ** Private functions
 *************************************************************************************/
-uint8_t prv_getNumberOfBit(uint8_t arg)
+static uint8_t prv_getNumberOfBit(uint8_t arg)
 {
     uint8_t number;
 
@@ -43,7 +43,7 @@ uint8_t prv_getNumberOfBit(uint8_t arg)
     return number;
 }
 
-uint8_t prv_getErrorValue(uint8_t errorCodesFlag, uint16_t resInstanceId)
+static uint8_t prv_getErrorValue(uint8_t errorCodesFlag, uint16_t resInstanceId)
 {
     uint8_t n;
     uint8_t res;
