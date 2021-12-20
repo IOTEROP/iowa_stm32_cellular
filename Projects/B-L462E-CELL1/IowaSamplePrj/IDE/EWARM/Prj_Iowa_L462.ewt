@@ -41597,7 +41597,7 @@
                     <name>$PROJ_DIR$\..\..\..\..\Misc\Samples\Iowa_Client\Src\iowa_app_l462e_cell1.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\Misc\Samples\Iowa_Client\Src\iowa_client.c</name>
+                    <name>$PROJ_DIR$\..\..\..\..\Misc\Samples\Iowa_Client\Src\iowa_sample.c</name>
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\..\..\..\Misc\Samples\Iowa_Client\Inc\iowa_config.h</name>

@@ -1,11 +1,13 @@
 (WORK IN PROGRESS)
 
 Changelog:
+20211219: 
+ - Add IAR IDE 8.50.6 support. Because of IAR 8.50.6, rename *Iowa_Client/Src/iowa_client.c* to *Iowa_Client/Src/iowa_sample.c*
+ - Update of all IDE projects (rename)
+ 
 20211216:
  - Add IAR IDE support (IAR Embeded Workbench for ARM rel.: 9.10)
  - Reorg source code tree (Iowa sample is now under Misc/Samples/Iowa_Client
-
-
 
 ![IOWA Logo](https://github.com/IOTEROP/IOWA/raw/master/.images/IoTerop_logo.jpg)
 

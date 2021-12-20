@@ -352,9 +352,9 @@
 			<locationURI>PARENT-4-PROJECT_LOC/Misc/Samples/Iowa_Client/Src/iowa_app_l462e_cell1.c</locationURI>
 		</link>
 		<link>
-			<name>Misc/Samples/Iowa_Client/iowa_client.c</name>
+			<name>Misc/Samples/Iowa_Client/iowa_sample.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Misc/Samples/Iowa_Client/Src/iowa_client.c</locationURI>
+			<locationURI>PARENT-4-PROJECT_LOC/Misc/Samples/Iowa_Client/Src/iowa_sample.c</locationURI>
 		</link>
 		<link>
 			<name>Misc/Samples/Iowa_Client/iowa_platform.c</name>
